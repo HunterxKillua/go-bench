@@ -1,0 +1,21 @@
+db:
+  host: 127.0.0.1  # MySQL 机器 IP 和端口，默认 127.0.0.1:3306
+  port: 3306 # mysql默认端口
+  username: root # MySQL 用户名(建议授权最小权限集)
+  password: 123456 # MySQL 用户密码
+  database: sass # miniblog 系统所用的数据库名
+  max-idle-connections: 50 # MySQL 最大空闲连接数，默认 100
+  max-open-connections: 100 # MySQL 最大打开的连接数，默认 100
+  max-connection-life-time: 10 # 空闲连接最大存活时间，默认 10s
+log:
+  disable-caller: false
+  disable-stacktrace: false
+  level: debug
+  format: console
+  output-paths: [logs/test.log, stdout]
+server:
+  port: 3000 # web服务端口
+email:
+  open: false # 是否开启邮件系统
+  username: captainchengjie@gmail.com # 邮件发送人邮箱
+  secrets: jltqlwvaisnhergv # 邮件应用密钥
