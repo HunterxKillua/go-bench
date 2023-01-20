@@ -1,7 +1,7 @@
 package cValidator
 
 import (
-	"fmt"
+	"ginBlog/pkg/logger"
 	utils "ginBlog/util"
 	"reflect"
 	"regexp"
@@ -25,7 +25,7 @@ lt：小于
 lte：小于等于，例如lte=10；
 oneof：值中的一个，例如oneof=1 2
 
-支持时间范围的比较lte  
+支持时间范围的比较lte
 时间 RegTime time.Time `validate:"lte"` 小于等于当前时间
 
 跨字段约束
@@ -78,7 +78,6 @@ func Init() *ValidConfig {
 	}
 	err := zh_translations.RegisterDefaultTranslations(validate, trans)
 	if err != nil {
-		fmt.Println(err)
 		return nil
 	}
 	return &ValidConfig{
@@ -87,12 +86,12 @@ func Init() *ValidConfig {
 	}
 }
 
-func (v *ValidConfig) CreateValidatorByVar(dest any, key string, tag ...string) (bool, string) {
+func (v *ValidConfig) CreateValidatorByVar(dest any, key string, message string, tag ...string) (bool, string) {
 	err := v.ValidInstance.Var(dest, strings.Join(tag, ","))
 	str := []string{}
 	if err != nil {
-		for _, err := range err.(validator.ValidationErrors) {
-			str = append(str, err.Translate(v.Locales))
+		for range err.(validator.ValidationErrors) {
+			str = append(str, message)
 		}
 		return false, key + ":" + strings.Join(str, ",")
 	}
@@ -138,7 +137,7 @@ func (v *ValidConfig) checkResult(dest any, err error) (bool, map[string]string)
 func (v *ValidConfig) CheckDestPtr(dest any, typ DestEnum) bool {
 	t := reflect.TypeOf(dest)
 	if t.Kind() != reflect.Ptr {
-		fmt.Println("请传入一个指针, 而非引用类型")
+		logger.Infow("请传入一个指针, 而非引用类型")
 		return false
 	}
 	switch typ {
@@ -146,7 +145,7 @@ func (v *ValidConfig) CheckDestPtr(dest any, typ DestEnum) bool {
 		if t.Elem().Kind() == reflect.Struct || t.Elem().Kind() == reflect.Map {
 			return true
 		} else {
-			fmt.Println("期望入参为struct或者Map类型的指针")
+			logger.Infow("期望入参为struct或者Map类型的指针")
 		}
 	case rows:
 		if t.Elem().Kind() == reflect.Slice {
@@ -154,7 +153,7 @@ func (v *ValidConfig) CheckDestPtr(dest any, typ DestEnum) bool {
 				return true
 			}
 		}
-		fmt.Println("期望入参为struct或者Map类型的切片指针")
+		logger.Infow("期望入参为struct或者Map类型的切片指针")
 	default:
 		return false
 	}
@@ -167,7 +166,7 @@ func (v *ValidConfig) IsStructPtr(dest any) bool {
 	if v.IsPtr(dest) {
 		return t.Elem().Kind() == reflect.Struct
 	} else {
-		fmt.Println("期望入参为struct类型的指针")
+		logger.Infow("期望入参为struct类型的指针")
 		return false
 	}
 }

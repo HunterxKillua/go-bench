@@ -1,7 +1,7 @@
 package sql
 
 import (
-	"fmt"
+	"ginBlog/pkg/logger"
 	"reflect"
 )
 
@@ -42,7 +42,7 @@ func (d *DB) SaveOneByMap(dest any, TableName string, values map[string]any, con
 				result := d.db.Table(TableName).Where(cond[0], cond[1:]).Limit(1).Updates(values)
 				return int(result.RowsAffected)
 			} else {
-				fmt.Println("缺少where条件")
+				logger.Infow("缺少where条件")
 			}
 		}
 	}
@@ -68,7 +68,7 @@ func (d *DB) SaveByModel(dest any, values any, cond ...any) int {
 			result := d.db.Model(dest).Where(cond[0], cond[1:]).Updates(values)
 			return int(result.RowsAffected)
 		} else {
-			fmt.Println("缺少where条件")
+			logger.Infow("缺少where条件")
 		}
 		return 0
 	}

@@ -5,7 +5,6 @@ Copyright © 2023 Killua<captainchengjie@gmail.com>
 package cmd
 
 import (
-	"encoding/json"
 	"ginBlog/api"
 	"ginBlog/pkg/logger"
 	"ginBlog/util/email"
@@ -112,10 +111,10 @@ func initConfig() {
 
 func run() error {
 	// 打印所有的配置项及其值
-	settings, _ := json.Marshal(viper.AllSettings())
-	logger.Infow(string(settings))
+	// settings, _ := json.Marshal(viper.AllSettings())
+	//logger.Infow(string(settings))
 	// 打印 db -> username 配置项的值
-	logger.Infow(viper.GetString("db.username"))
+	// logger.Infow(viper.GetString("db.username"))
 	api.DB = sql.ConnectDB(handleConfigDB())
 	email.LoginAuth(handleConfigEmail())
 	server.Run(":" + handleConfigServer())

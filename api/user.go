@@ -37,7 +37,7 @@ func GetAllUser(g *gin.RouterGroup) {
 		var sort = "user_id ASC"
 		var user = []map[string]any{}
 		params, _ := ctx.Get("requestConfig")
-		fmt.Println(params)
+		// fmt.Println(params)
 		config, _ := params.(map[string]any)
 		page := res.AnyToInt(config["page"])
 		size := res.AnyToInt(config["size"])

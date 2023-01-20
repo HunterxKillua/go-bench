@@ -104,8 +104,9 @@ func (instance *InterceptConfig) ParseConfig(dest any, config map[string]string)
 		switch field.Type.Kind() {
 		case reflect.String:
 			validator, ok := field.Tag.Lookup("validate")
+			message, ok := field.Tag.Lookup("errr_info")
 			if ok {
-				status, message := instance.ValidConfig.CreateValidatorByVar(value, key, validator)
+				status, message := instance.ValidConfig.CreateValidatorByVar(value, key, message, validator)
 				if !status {
 					errs = append(errs, message)
 				}

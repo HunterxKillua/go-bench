@@ -23,11 +23,6 @@ func Login(r *gin.Engine) {
 		has := md5.Sum(data)
 		md5str1 := fmt.Sprintf("%x", has) //将[]byte转成16进制
 		fmt.Println(md5str1)
-		// var user map[string]any
-		// err := db.GetDB().Model(&models.User{}).
-		// 	Select("user_id", dict).
-		// 	Where("user_id = ?", 4).
-		// 	Find(&user)
 
 		token := middleware.SetToken(map[string]any{
 			"name": "hah",
@@ -50,8 +45,5 @@ func Register(r *gin.Engine) {
 			"message": nil,
 			"config":  config,
 		})
-		// forms, _ := ctx.Get("interceptForm")
-		// config, _ := forms.(map[string]any)
-		// fmt.Println(config)
 	})
 }
